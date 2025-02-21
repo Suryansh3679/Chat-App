@@ -70,7 +70,7 @@ dependencies {
 //    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+//    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
 
@@ -103,4 +103,7 @@ dependencies {
     testImplementation ("com.google.dagger:hilt-android-testing:2.50")
     kspTest ("com.google.dagger:hilt-compiler:2.50")
 
+
+    //hilt navigation dependency
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 }

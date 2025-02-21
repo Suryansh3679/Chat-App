@@ -6,30 +6,36 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import app.proj.whispr.Screens.LoginScreen
+import app.proj.whispr.Screens.SignUpScreen
 import app.proj.whispr.ui.theme.WhisprTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-sealed class DestinationScreen(var route : String){
+sealed class DestinationScreen(var route: String) {
 
     object SignUp : DestinationScreen("signup")
     object Login : DestinationScreen("login")
     object Profile : DestinationScreen("profile")
     object ChatList : DestinationScreen("chatList")
-    object SingleChat : DestinationScreen("singleChat/{chatId}"){
+    object SingleChat : DestinationScreen("singleChat/{chatId}") {
         fun createRoute(id: String) = "singleChat/$id"
     }
 
     object StatusList : DestinationScreen("StatusList")
-    object SingleStatus: DestinationScreen("singleStatus/{userId}"){
+    object SingleStatus : DestinationScreen("singleStatus/{userId}") {
         fun createRoute(userid: String) = "singleChat/$userid"
     }
 
 }
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,23 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ChatAppNavigation(){
+    fun ChatAppNavigation() {
+
+        val navController = rememberNavController()
+        val viewModel = hiltViewModel<LCViewModel>()
+
+        NavHost(navController = navController, startDestination = DestinationScreen.SignUp.route) {
+
+            composable(DestinationScreen.SignUp.route) {
+
+                SignUpScreen(navController)
+            }
+            composable(DestinationScreen.Login.route) {
+                LoginScreen()
+            }
+
+        }
+
 
     }
 }

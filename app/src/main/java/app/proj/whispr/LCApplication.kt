@@ -5,3 +5,6 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class LCApplication : Application()
+{
+
+}

@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
             composable(DestinationScreen.SignUp.route) {
 
-                SignUpScreen(navController)
+                SignUpScreen(navController,viewModel)
             }
             composable(DestinationScreen.Login.route) {
                 LoginScreen()

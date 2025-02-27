@@ -149,5 +149,9 @@ fun SignUpScreen(navController: NavController, viewModel: LCViewModel) {
             )
 
         }
+
+        if (viewModel.inProgress.value){
+
+        }
     }
 }

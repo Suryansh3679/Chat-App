@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import app.proj.whispr.CommonProgressBar
 import app.proj.whispr.DestinationScreen
 import app.proj.whispr.LCViewModel
 import app.proj.whispr.R
@@ -151,7 +152,7 @@ fun SignUpScreen(navController: NavController, viewModel: LCViewModel) {
         }
 
         if (viewModel.inProgress.value){
-
+            CommonProgressBar()
         }
     }
 }

@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import app.proj.whispr.CheckSignedIn
 import app.proj.whispr.CommonProgressBar
 import app.proj.whispr.DestinationScreen
 import app.proj.whispr.LCViewModel
@@ -44,7 +45,12 @@ import app.proj.whispr.navigateTo
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun SignUpScreen(navController: NavController, viewModel: LCViewModel) {
+fun SignUpScreen(
+    navController: NavController,
+    viewModel: LCViewModel
+) {
+    CheckSignedIn(viewModel,navController)
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -151,7 +157,7 @@ fun SignUpScreen(navController: NavController, viewModel: LCViewModel) {
 
         }
 
-        if (viewModel.inProgress.value){
+        if (viewModel.inProgress.value) {
             CommonProgressBar()
         }
     }

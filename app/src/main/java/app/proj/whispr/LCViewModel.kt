@@ -78,6 +78,27 @@ class LCViewModel @Inject constructor(
     }
 
 
+    fun logIn(email: String,password: String){
+        if (email.isEmpty() or password.isEmpty()){
+            handleException(customMessage = "Please Fill All Fields")
+            return
+        }else{
+            inProgress.value = true
+            auth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
+                if(it.isSuccessful){
+
+                    signIn.value = true
+                    inProgress.value = false
+                    auth.currentUser?.uid?.let {
+                        getUserData(it)
+                    }
+                }else{
+                    handleException(it.exception,customMessage = "Login Failed")
+                }
+            }
+        }
+    }
+
     fun createOrUpdateProfile(name: String?= null,number: String?= null, imageUrl: String?= null ){
         var uid = auth.currentUser?.uid
         val userData = UserData(

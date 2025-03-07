@@ -94,6 +94,7 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("com.google.firebase:firebase-firestore:25.1.2")
+    implementation("com.google.firebase:firebase-storage:21.0.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -115,4 +116,7 @@ dependencies {
 
     //hilt navigation dependency
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    //Coil dependency for using RememberImagePainter
+    implementation("io.coil-kt.coil3:coil-compose:3.0.0")
 }

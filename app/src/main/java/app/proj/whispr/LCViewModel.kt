@@ -1,6 +1,7 @@
 package app.proj.whispr
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.currentComposer
@@ -13,14 +14,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.events.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class LCViewModel @Inject constructor(
     val auth : FirebaseAuth,
-    val db : FirebaseFirestore
+    val db : FirebaseFirestore,
+    val storage : FirebaseStorage
 ) : ViewModel() {
     //to show circular progress Bar
     var inProgress = mutableStateOf(false)
@@ -96,6 +100,29 @@ class LCViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun uploadProfileImage(uri: Uri){
+        uploadImage(uri){
+             createOrUpdateProfile(imageUrl = it.toString())
+        }
+    }
+
+    fun uploadImage(uri: Uri, onSuccess : (uri : Uri) -> Unit){
+        inProgress.value = true
+        val storageRef = storage.reference
+        val uuid = UUID.randomUUID()
+        val imageRef = storageRef.child("images/${uuid}")
+        val uploadTask = imageRef.putFile(uri)
+        uploadTask.addOnSuccessListener {
+            val result = it.metadata?.reference?.downloadUrl
+            result?.addOnSuccessListener(onSuccess)
+
+            inProgress.value = false
+        }
+            .addOnFailureListener {
+                handleException(it,"Cannot Upload Image")
+            }
     }
 
     fun createOrUpdateProfile(name: String?= null,number: String?= null, imageUrl: String?= null ){

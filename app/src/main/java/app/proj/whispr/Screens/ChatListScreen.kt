@@ -2,10 +2,14 @@ package app.proj.whispr.Screens
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import app.proj.whispr.LCViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @Composable
-fun ChatListScreen(){
+fun ChatListScreen(navController: NavController,viewModel: LCViewModel){
 
-    Text(text = "You have already Signed IN and on Chat List Screen")
+
+    BottomNavigationMenu(selectedItem = BottomNavigationMenuItem.CHATLIST, navController = navController )
 }

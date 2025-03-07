@@ -21,7 +21,6 @@ import javax.inject.Inject
 class LCViewModel @Inject constructor(
     val auth : FirebaseAuth,
     val db : FirebaseFirestore
-
 ) : ViewModel() {
     //to show circular progress Bar
     var inProgress = mutableStateOf(false)

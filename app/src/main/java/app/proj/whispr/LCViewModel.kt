@@ -141,12 +141,14 @@ class LCViewModel @Inject constructor(
 
                 if (it.exists()){
                     // update user data
+                    db.collection(USER_NODE).document(uid).update(userData.toMap())
+
                 }else{
                     db.collection(USER_NODE).document(uid).set(userData)
-                    inProgress.value = false
-
+//                    inProgress.value = false
                     getUserData(uid)
                 }
+                inProgress.value = false
             }
                 .addOnFailureListener(){
                     handleException(it,"Cannot Retrieve User")
@@ -186,5 +188,12 @@ class LCViewModel @Inject constructor(
         inProgress.value = false
 
 
+    }
+
+    fun logOut() {
+        auth.signOut()
+        signIn.value = false
+        userData.value = null
+        eventMutableState.value = Events("Logged Out")
     }
 }

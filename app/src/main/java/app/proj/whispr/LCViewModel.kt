@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import app.proj.whispr.data.ChatData
 import app.proj.whispr.data.Events
 import app.proj.whispr.data.USER_NODE
 import app.proj.whispr.data.UserData
@@ -28,11 +29,13 @@ class LCViewModel @Inject constructor(
 ) : ViewModel() {
     //to show circular progress Bar
     var inProgress = mutableStateOf(false)
+    var inProcessChat = mutableStateOf(false)
     val eventMutableState = mutableStateOf<Events<String>?>(null)
     // To check that user successfully signed in or not
     var signIn = mutableStateOf(false)
     // If user already has a account
     var userData = mutableStateOf<UserData?>(null)
+    val chats = mutableStateOf<List<ChatData>>(listOf())
 
     init {
         val currentUser = auth.currentUser
@@ -195,5 +198,9 @@ class LCViewModel @Inject constructor(
         signIn.value = false
         userData.value = null
         eventMutableState.value = Events("Logged Out")
+    }
+
+    fun onAddChat(it: String) {
+
     }
 }

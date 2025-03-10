@@ -94,6 +94,7 @@ fun ProfileScreen(navController: NavController, viewModel: LCViewModel) {
                     onNumberChange = {number = it},
                     onLogOut = {
                         viewModel.logOut()
+                        navController.navigate(DestinationScreen.Login.route)
                     }
                 )
             }

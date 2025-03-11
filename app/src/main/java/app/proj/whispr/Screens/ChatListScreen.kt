@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -45,8 +46,8 @@ fun ChatListScreen(navController: NavController, viewModel: LCViewModel) {
         val onAddChat: (String) -> Unit = {
             viewModel.onAddChat(it)
 
-            //error here
-//            showDialog.value = false
+
+            showDialog.value = false
         }
         Scaffold(
             floatingActionButton = {
@@ -90,14 +91,7 @@ fun FAB(
         mutableStateOf("")
     }
 
-    FloatingActionButton(
-        onClick = { onFabClick() },
-        containerColor = MaterialTheme.colorScheme.secondary,
-        shape = CircleShape,
-        modifier = Modifier.padding(bottom = 40.dp)
-    ) {
-        Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.White)
-    }
+
     if (showDialog) {
         AlertDialog(
             onDismissRequest = {
@@ -105,8 +99,10 @@ fun FAB(
                 addChatNumber.value = ""
             },
             confirmButton = {
-                onAddChat(addChatNumber.value)
-                Text(text = "Add Chat")
+                Button(onClick = { onAddChat(addChatNumber.value) }) {
+                    Text(text = "Add Chat")
+                }
+
             },
             title = { Text(text = "Add Char") },
             text = {
@@ -118,5 +114,14 @@ fun FAB(
                 )
             }
         )
+    } else {
+        FloatingActionButton(
+            onClick = { onFabClick() },
+            containerColor = MaterialTheme.colorScheme.secondary,
+            shape = CircleShape,
+            modifier = Modifier.padding(bottom = 40.dp)
+        ) {
+            Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.White)
+        }
     }
 }

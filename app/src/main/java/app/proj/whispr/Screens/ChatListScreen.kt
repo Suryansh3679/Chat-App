@@ -1,9 +1,12 @@
 package app.proj.whispr.Screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -19,13 +22,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.proj.whispr.CommonProgressBar
+import app.proj.whispr.CommonRow
+import app.proj.whispr.DestinationScreen
 import app.proj.whispr.LCViewModel
+import app.proj.whispr.TitleText
+import app.proj.whispr.navigateTo
 
 
 @Composable
@@ -71,7 +79,35 @@ fun ChatListScreen(navController: NavController, viewModel: LCViewModel) {
                     .fillMaxSize()
             )
             {
+                TitleText(txt = "Chats")
 
+                if(chats.isEmpty()){
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                        Text(text = "No Chats Available")
+                    }
+                }else{
+                    LazyColumn(modifier = Modifier.weight(1f)){
+                        items(chats){
+                            chat->
+                            val chatUser = if(chat.user1.userId == userData?.userId){
+                                chat.user2
+                            }else{
+                                chat.user1
+                            }
+                            CommonRow(imageUrl = chatUser.imageUrl?:"", name = chatUser.name) {
+
+                                chatUser.userId?.let{
+                                    navigateTo(navController,DestinationScreen.SingleChat.createRoute(id = it))
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

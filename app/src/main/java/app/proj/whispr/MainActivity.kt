@@ -16,6 +16,7 @@ import app.proj.whispr.Screens.ChatListScreen
 import app.proj.whispr.Screens.LoginScreen
 import app.proj.whispr.Screens.ProfileScreen
 import app.proj.whispr.Screens.SignUpScreen
+import app.proj.whispr.Screens.SingleChatScreen
 import app.proj.whispr.Screens.StatusScreen
 import app.proj.whispr.ui.theme.WhisprTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +74,13 @@ class MainActivity : ComponentActivity() {
 
             composable(DestinationScreen.ChatList.route) {
                 ChatListScreen(navController,viewModel)
+            }
+            composable(DestinationScreen.SingleChat.route) {
+                val chatId = it.arguments?.getString("chatId")
+                chatId?.let{
+                    SingleChatScreen(navController,viewModel,chatId = chatId)
+                }
+
             }
             composable(DestinationScreen.StatusList.route) {
                 StatusScreen(navController,viewModel)

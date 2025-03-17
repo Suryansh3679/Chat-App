@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.events.Event
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import com.google.firebase.storage.FirebaseStorage
@@ -35,6 +36,7 @@ class LCViewModel @Inject constructor(
     val db: FirebaseFirestore,
     val storage: FirebaseStorage
 ) : ViewModel() {
+
     //to show circular progress Bar
     var inProgress = mutableStateOf(false)
     var inProcessChat = mutableStateOf(false)
@@ -47,12 +49,42 @@ class LCViewModel @Inject constructor(
     var userData = mutableStateOf<UserData?>(null)
     val chats = mutableStateOf<List<ChatData>>(listOf())
 
+    //Messages
+    val chatMessages = mutableStateOf<List<Message>>(listOf())
+    val inProgressChatMessage = mutableStateOf(false)
+    var currentChatMessageListener: ListenerRegistration? = null
+
+
     init {
         val currentUser = auth.currentUser
         signIn.value = currentUser != null
         currentUser?.uid?.let {
             getUserData(it)
         }
+    }
+
+    fun populateMessages(chatId: String) {
+        inProgressChatMessage.value = true
+        currentChatMessageListener = db.collection(CHATS).document(chatId).collection(MESSAGE)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    handleException(error)
+                }
+                if (value != null) {
+                    chatMessages.value = value.documents.mapNotNull {
+                        it.toObject<Message>()
+                    }.sortedBy {
+                        it.timeStamp
+                    }
+                    inProgressChatMessage.value = false
+                }
+
+            }
+    }
+
+    fun dePopulateMessages(){
+        chatMessages.value = listOf()
+        currentChatMessageListener = null
     }
 
     fun populateChats() {
@@ -233,6 +265,8 @@ class LCViewModel @Inject constructor(
         signIn.value = false
         userData.value = null
         eventMutableState.value = Events("Logged Out")
+        dePopulateMessages()
+        currentChatMessageListener = null
     }
 
     fun onAddChat(number: String) {
@@ -289,9 +323,9 @@ class LCViewModel @Inject constructor(
         }
     }
 
-    fun onSendReply(chatId : String, message :String){
+    fun onSendReply(chatId: String, message: String) {
         val time = Calendar.getInstance().time.toString()
-        val msg = Message(userData.value?.userId,message = message, timeStamp = time)
+        val msg = Message(userData.value?.userId, message = message, timeStamp = time)
         db.collection(CHATS).document(chatId).collection(MESSAGE).document().set(msg)
     }
 }

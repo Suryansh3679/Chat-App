@@ -12,6 +12,8 @@ import app.proj.whispr.data.CHATS
 import app.proj.whispr.data.ChatData
 import app.proj.whispr.data.ChatUser
 import app.proj.whispr.data.Events
+import app.proj.whispr.data.MESSAGE
+import app.proj.whispr.data.Message
 import app.proj.whispr.data.USER_NODE
 import app.proj.whispr.data.UserData
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +25,7 @@ import com.google.firebase.firestore.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
+import java.util.Calendar
 import java.util.UUID
 import javax.inject.Inject
 
@@ -284,5 +287,11 @@ class LCViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun onSendReply(chatId : String, message :String){
+        val time = Calendar.getInstance().time.toString()
+        val msg = Message(userData.value?.userId,message = message, timeStamp = time)
+        db.collection(CHATS).document(chatId).collection(MESSAGE).document().set(msg)
     }
 }

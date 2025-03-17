@@ -102,7 +102,7 @@ fun ChatListScreen(navController: NavController, viewModel: LCViewModel) {
                             CommonRow(imageUrl = chatUser.imageUrl?:"", name = chatUser.name) {
 
                                 chatUser.userId?.let{
-                                    navigateTo(navController,DestinationScreen.SingleChat.createRoute(id = it))
+                                    navigateTo(navController,DestinationScreen.SingleChat.createRoute(id = chat.chatId))
                                 }
                             }
                         }

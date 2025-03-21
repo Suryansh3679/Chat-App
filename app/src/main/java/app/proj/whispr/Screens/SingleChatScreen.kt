@@ -93,17 +93,9 @@ fun SingleChatScreen(navController: NavController, viewModel: LCViewModel, chatI
                 currentUserId = myUser?.userId.toString(),
                 navController=navController
             )
-
-
-
-
         }
     }
-
-
-
 }
-
 @Composable
 fun MessageBox(modifier: Modifier, chatMessages: List<Message>, currentUserId: String,navController: NavController) {
     val listState = rememberLazyListState()
@@ -138,7 +130,6 @@ fun MessageBox(modifier: Modifier, chatMessages: List<Message>, currentUserId: S
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                     )
-
             }
         }
     }

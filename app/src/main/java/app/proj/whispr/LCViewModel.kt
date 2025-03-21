@@ -14,6 +14,7 @@ import app.proj.whispr.data.ChatUser
 import app.proj.whispr.data.Events
 import app.proj.whispr.data.MESSAGE
 import app.proj.whispr.data.Message
+import app.proj.whispr.data.Status
 import app.proj.whispr.data.USER_NODE
 import app.proj.whispr.data.UserData
 import com.google.firebase.auth.FirebaseAuth
@@ -54,6 +55,10 @@ class LCViewModel @Inject constructor(
     val inProgressChatMessage = mutableStateOf(false)
     var currentChatMessageListener: ListenerRegistration? = null
 
+    //Status
+
+    val status = mutableStateOf<List<Status>>(listOf())
+    val inProgressStatus = mutableStateOf(false)
 
     init {
         val currentUser = auth.currentUser
